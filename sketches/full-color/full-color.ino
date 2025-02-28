@@ -5,6 +5,7 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(228, 5, NEO_GRB + NEO_KHZ800);
 
 #define button_pin 8
+#define num_leds = 
 
 File dataFile;
 
@@ -60,29 +61,50 @@ void loop() {
   }
 
   if (buttonPressed == HIGH && reading) {
-    Serial.println("reading reading reading..");
+    // Serial.println("reading reading reading..");
 
     // byte chunk = dataFile.read();
     // int integerValue = chunk - '0';
     // Serial.println(integerValue);
 
-    if(!dataFile.available()){
+    if (!dataFile.available()) {
       dataFile.close();
       reading = false;
       return;
     }
 
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 12; j++) {
-        byte chunk = dataFile.read();
-        if (chunk == ',') {
-          Serial.print(',');
-        } else {
-          int integerValue = chunk - '0';  // Convert ASCII to integer
-          Serial.print(integerValue);
+    for (int ledIndex = 0; ledIndex < 228; ledIndex++) {
+
+      int RGBValues[3];
+      int RGBIndex = 0;
+
+      for (int ledColor = 0; ledColor < 3; ledColor++) {  // we extract the 3 RGB color values
+
+        byte data = dataFile.read();  // this reads the comma
+
+        char chars[3];
+
+        for (int valueChar = 0; valueChar < 3; valueChar++) {  // the values are chars, so we need to combine them into a 3 digit number
+
+          byte data = dataFile.read();
+
+          int integerValue = data - '0';
+
+          chars[valueChar] = integerValue;
+
         }
+
+        int colorValue = chars[0] * 100 + chars[1] * 10 + chars[2];
+
+        RGBValues[RGBIndex] = colorValue;
+        RGBIndex++;
       }
+      
+      strip.setPixelColor(ledIndex,RGBValues[0],RGBValues[1],RGBValues[2]);
+
     }
+
+    strip.show();
 
     // read to more bytes, for the end line characters
     byte endline = dataFile.read();
