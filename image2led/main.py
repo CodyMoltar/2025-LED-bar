@@ -42,8 +42,8 @@ with open(image_name + "/image.txt", "w") as f:
             b = f"{b:03}"
             # if(x > 0):
             #     f.write(",")
-            f.write(f",{r},{g},{b}")
-        f.write("\n")
+            f.write(f"{r}{g}{b}")
+        # f.write("\n")
 
 # get the first line of the txt file
 # split the line by comma

@@ -61,17 +61,15 @@ void loop() {
   }
 
   if (buttonPressed == HIGH && reading) {
-    // Serial.println("reading reading reading..");
-
-    // byte chunk = dataFile.read();
-    // int integerValue = chunk - '0';
-    // Serial.println(integerValue);
 
     if (!dataFile.available()) {
+      Serial.print("nothing to read anymore, closing and stopping reading..");
       dataFile.close();
       reading = false;
       return;
     }
+
+    Serial.print("reading line");
 
     for (int ledIndex = 0; ledIndex < 228; ledIndex++) {
 
@@ -80,7 +78,7 @@ void loop() {
 
       for (int ledColor = 0; ledColor < 3; ledColor++) {  // we extract the 3 RGB color values
 
-        byte data = dataFile.read();  // this reads the comma
+        // byte data = dataFile.read();  // this reads the comma
 
         char chars[3];
 
@@ -100,6 +98,7 @@ void loop() {
         RGBIndex++;
       }
       
+      strip.setBrightness(255);
       strip.setPixelColor(ledIndex,RGBValues[0],RGBValues[1],RGBValues[2]);
 
     }
@@ -107,8 +106,8 @@ void loop() {
     strip.show();
 
     // read to more bytes, for the end line characters
-    byte endline = dataFile.read();
-    endline = dataFile.read();
+    // byte endline = dataFile.read();
+    // endline = dataFile.read();
   }
 
   if (buttonPressed == LOW && reading) {
