@@ -5,12 +5,11 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(228, 5, NEO_GRB + NEO_KHZ800);
 
 #define button_pin 8
-#define num_leds = 
 
 File dataFile;
 
 const int numLeds = 228;                           // Total number of LEDs
-const int valuesPerLed = 3;                        // RGB values per LED
+const int valuesPerLed = 3;                      // RGB values per LED
 const int valuesPerLine = numLeds * valuesPerLed;  // Total values per line
 
 // Placeholder for LED control (replace with your LED library/code)
@@ -103,6 +102,7 @@ void loop() {
 
     }
 
+    strip.setBrightness(64);
     strip.show();
 
     // read to more bytes, for the end line characters
